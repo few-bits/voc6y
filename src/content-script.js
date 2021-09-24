@@ -1,3 +1,4 @@
+import sanitizeHtml from "./utils/sanitize-html";
 import { BUFFER_MOUNT_POINT } from "./constants";
 
 const createBufferElement = () => {
@@ -16,7 +17,7 @@ const onSelectionHandler = () => {
   }
   buffer.innerHTML = "";
   buffer.appendChild(fragment);
-  const selectedText = buffer.textContent;
+  const selectedText = sanitizeHtml(buffer.textContent);
 
   console.log(selectedText);
 };
