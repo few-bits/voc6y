@@ -1,0 +1,19 @@
+{
+  "name": "Vocabulary",
+  "action": {},
+  "manifest_version": 3,
+  "version": "0.1",
+  "description": "collect and remember new words",
+  "permissions": [
+    "scripting"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["http://*/*", "https://*/*"],
+      "js": ["content-script.js"]
+    }
+  ]
+}
