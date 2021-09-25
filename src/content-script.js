@@ -1,5 +1,6 @@
 import sanitizeHtml from "./utils/sanitize-html";
 import { BUFFER_MOUNT_POINT } from "./constants";
+import { create } from "./storage/persistence";
 
 const createBufferElement = () => {
   const buffer = document.createElement("div");
@@ -8,7 +9,7 @@ const createBufferElement = () => {
   return buffer;
 };
 
-const onSelectionHandler = () => {
+const onSelectionHandler = async () => {
   const fragment = window.getSelection().getRangeAt(0).cloneContents();
   let buffer = document.getElementById(BUFFER_MOUNT_POINT);
 
@@ -20,6 +21,9 @@ const onSelectionHandler = () => {
   const selectedText = sanitizeHtml(buffer.textContent);
 
   console.log(selectedText);
+  if (selectedText !== "") {
+    await create(selectedText);
+  }
 };
 
 createBufferElement();

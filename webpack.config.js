@@ -6,6 +6,11 @@ module.exports = {
     background: "./src/background.js",
     "content-script": "./src/content-script.js",
   },
+  resolve: {
+    alias: {
+      ExtensionServices: path.resolve(__dirname, "src/extension-services/"),
+    },
+  },
   devtool: "inline-source-map",
   plugins: [
     new CopyPlugin({
