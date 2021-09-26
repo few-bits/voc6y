@@ -27,8 +27,8 @@ export const hideTooltip = () => {
 };
 export const spawnTooltip = (position) => {
   const [x, y] = position;
-  console.log(position);
   const tooltip = getTooltip();
+
   tooltip.style.left = `${x}px`;
   tooltip.style.top = `${y}px`;
   tooltip.className = TOOLTIP_CLASS_VISIBLE;
