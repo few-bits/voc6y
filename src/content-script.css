@@ -1,0 +1,29 @@
+#voc6y-tooltip {
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    box-sizing: content-box;
+    padding: 3px;
+    border-radius: 5px;
+    line-height: 20px;
+    cursor: pointer;
+    background-color: #F5F5F5FF;
+    border: 1px solid #DCDCDCFF;
+}
+
+#voc6y-tooltip:hover {
+    background-color: #F8F8F8FF;
+    box-shadow: #00000019 0 1px 1px;
+    border-color: #C6C6C6FF;
+}
+
+#voc6y-tooltip.voc6y-tooltip-hidden {
+    display: none;
+}
+
+#voc6y-tooltip.voc6y-tooltip-visible {
+    display: block;
+}
+

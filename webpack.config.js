@@ -14,7 +14,10 @@ module.exports = {
   devtool: "inline-source-map",
   plugins: [
     new CopyPlugin({
-      patterns: [{ from: "src/extension-assets", to: "." }],
+      patterns: [
+        { from: "src/extension-assets", to: "." },
+        { from: "src/content-script.css", to: "." },
+      ],
     }),
   ],
   output: {

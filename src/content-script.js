@@ -1,30 +1,50 @@
-import sanitizeHtml from "./utils/sanitize-html";
-import { BUFFER_MOUNT_POINT } from "./constants";
 import { create } from "./storage/persistence";
+import { getTooltipPosition } from "./utils/dom";
+import sanitizeHtml from "./utils/sanitize-html";
+import {
+  createBuffer,
+  createTooltip,
+  getBuffer,
+  hideTooltip,
+  isClickedByTooltip,
+  spawnTooltip,
+} from "ExtensionServices/dom";
 
-const createBufferElement = () => {
-  const buffer = document.createElement("div");
-  buffer.id = BUFFER_MOUNT_POINT;
-  document.body.appendChild(buffer);
-  return buffer;
-};
+const mouseUpHandler = async (event) => {
+  const selection = window.getSelection();
+  const range = selection.getRangeAt(0);
+  const fragment = range.cloneContents();
 
-const onSelectionHandler = async () => {
-  const fragment = window.getSelection().getRangeAt(0).cloneContents();
-  let buffer = document.getElementById(BUFFER_MOUNT_POINT);
-
+  let buffer = getBuffer();
   if (!buffer) {
-    buffer = createBufferElement();
+    buffer = createBuffer();
   }
+
   buffer.innerHTML = "";
   buffer.appendChild(fragment);
   const selectedText = sanitizeHtml(buffer.textContent);
 
-  console.log(selectedText);
-  if (selectedText !== "") {
+  if (selectedText === "") {
+    hideTooltip();
+  } else {
+    const rect = range.getBoundingClientRect();
+    const tooltipPosition = getTooltipPosition(rect, event);
+
+    spawnTooltip(tooltipPosition);
+
     await create(selectedText);
   }
 };
 
-createBufferElement();
-document.onmouseup = onSelectionHandler;
+const mouseDownHandler = (event) => {
+  if (isClickedByTooltip(event)) {
+    // activate translation flow
+  } else {
+    hideTooltip();
+  }
+};
+
+createBuffer();
+createTooltip();
+document.onmouseup = mouseUpHandler;
+document.onmousedown = mouseDownHandler;
