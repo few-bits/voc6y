@@ -1,4 +1,4 @@
-import { create } from "./storage/persistence";
+import * as vocab from "./storage/persistence";
 import { getTooltipPosition } from "./utils/dom";
 import sanitizeHtml from "./utils/sanitize-html";
 import {
@@ -9,6 +9,8 @@ import {
   isClickedByTooltip,
   spawnTooltip,
 } from "ExtensionServices/dom";
+
+let selectedText = "";
 
 const mouseUpHandler = async (event) => {
   const selection = window.getSelection();
@@ -22,7 +24,8 @@ const mouseUpHandler = async (event) => {
 
   buffer.innerHTML = "";
   buffer.appendChild(fragment);
-  const selectedText = sanitizeHtml(buffer.textContent);
+
+  selectedText = sanitizeHtml(buffer.textContent);
 
   if (selectedText === "") {
     hideTooltip();
@@ -31,16 +34,15 @@ const mouseUpHandler = async (event) => {
     const tooltipPosition = getTooltipPosition(rect, event);
 
     spawnTooltip(tooltipPosition);
-
-    await create(selectedText);
   }
 };
 
-const mouseDownHandler = (event) => {
+const mouseDownHandler = async (event) => {
   if (isClickedByTooltip(event)) {
-    // activate translation flow
+    await vocab.create(selectedText);
   } else {
     hideTooltip();
+    selectedText = "";
   }
 };
 
